@@ -1,5 +1,6 @@
 package papler.projetologin.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ public class UsuarioEntity {
         @Column(unique = true, nullable = false, name = "login")
         private String login;
         @Column(nullable = false, name = "password")
+        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
         private String password;
         @Column(nullable = false, name = "nomeCompleto")
         private String nomeCompleto;
