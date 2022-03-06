@@ -1,4 +1,4 @@
-package entities;
+package papler.projetologin.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,9 +26,11 @@ public class UsuarioEntity {
         private String password;
         @Column(nullable = false, name = "nomeCompleto")
         private String nomeCompleto;
+        @Column(nullable = false, name = "email", unique = true)
+        private String email;
         @Column(nullable = true, name = "telefone")
         private String telefone;
-        @Column(nullable = true, name = "cpf")
+        @Column(unique = true, nullable = true, name = "cpf")
         private String cpf;
         @Column(nullable = true, name = "cidade")
         private String cidade;

@@ -1,7 +1,8 @@
-package repositories;
+package papler.projetologin.repositories;
 
-import entities.UsuarioEntity;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import papler.projetologin.entities.UsuarioEntity;
 
 import java.util.Optional;
 

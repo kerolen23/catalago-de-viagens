@@ -1,13 +1,15 @@
-package controller;
+package papler.projetologin.controller;
 
-import entities.UsuarioEntity;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import repositories.UsuarioRepository;
+import papler.projetologin.entities.UsuarioEntity;
+import papler.projetologin.repositories.UsuarioRepository;
 
 import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/api/usuario")
@@ -23,7 +25,7 @@ public class UsuarioController {
 
     @GetMapping("/validar")
     public String validar(String validar){
-        return "ok";
+        return "Bem-Vindo";
     }
 
     @PostMapping("/salvar")
