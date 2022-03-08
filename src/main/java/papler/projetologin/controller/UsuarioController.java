@@ -5,10 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import papler.projetologin.data.DetalheUsuarioData;
 import papler.projetologin.entities.UsuarioEntity;
 import papler.projetologin.repositories.UsuarioRepository;
-import papler.projetologin.service.DetalheUsuarioServiceImpl;
 
 import java.util.Optional;
 
@@ -25,18 +23,14 @@ public class UsuarioController {
         this.encoder = encoder;
     }
 
-    @GetMapping("/validar")
-    public String validar(String validar){
-        return "Bem-Vindo";
-    }
-
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/salvar")
     public ResponseEntity<UsuarioEntity> salvar(@RequestBody UsuarioEntity usuario) {
         usuario.setPassword(encoder.encode(usuario.getPassword()));
         return ResponseEntity.ok(repository.save(usuario));
     }
 
-    @GetMapping("/validarSenha")
+   @GetMapping("/validarSenha")
     public ResponseEntity<Boolean> validarSenha(@RequestParam String login,
                                                 @RequestParam String password) {
 
@@ -50,6 +44,23 @@ public class UsuarioController {
 
         HttpStatus status = (valid) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
         return ResponseEntity.status(status).body(valid);
+    }
+
+    @GetMapping("/usuario/{id}")
+    public Optional<UsuarioEntity> listausuario(@PathVariable(value="id") Integer id){
+        return repository.findById(id);
+    }
+
+    @PatchMapping ("/update")
+    public UsuarioEntity update(@RequestBody UsuarioEntity usuario){
+        usuario.setPassword(encoder.encode(usuario.getPassword()));
+        return repository.save(usuario);
+
+    }
+
+    @DeleteMapping("{id}/delete")
+    public void deletaProduto(@RequestBody UsuarioEntity usuario) {
+        repository.delete(usuario);
     }
 
     }
