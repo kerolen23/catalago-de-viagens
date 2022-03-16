@@ -1,17 +1,18 @@
 package papler.projetologin.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity(name="Usuario")
 
 public class UsuarioEntity {
@@ -19,34 +20,29 @@ public class UsuarioEntity {
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        @Column
+        @Column(name= "ID")
         private Integer id;
-        @Column(unique = true, nullable = false, name = "login")
-        private String login;
-        @Column(nullable = false, name = "password")
-        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-        private String password;
-        @Column(nullable = false, name = "nomeCompleto")
+        @Column( name = "nomeCompleto")
         private String nomeCompleto;
-        @Column(nullable = false, name = "email", unique = true)
-        private String email;
-        @Column(nullable = true, name = "telefone")
+        @Column(name = "telefone")
         private String telefone;
-        @Column(unique = true, nullable = true, name = "cpf")
+        @Column(name = "dtNascimento")
+        private String dtNascimento;
+        @Column(name = "cpf")
         private String cpf;
-        @Column(nullable = true, name = "cidade")
+        @Column(name = "cidade")
         private String cidade;
-        @Column(nullable = true, name = "rua")
+        @Column(name = "rua")
         private String rua;
-        @Column(nullable = true, name = "numero")
+        @Column(name = "numero")
         private String numero;
-        @Column(nullable = true, name = "complemento")
+        @Column(name = "complemento")
         private String complemento;
-        @Column(nullable = true, name = "bairro")
+        @Column(name = "bairro")
         private String bairro;
-        @Column(nullable = true, name = "estado")
+        @Column(name = "estado")
         private String estado;
-        @Column(nullable = true, name = "cep")
+        @Column(name = "cep")
         private String cep;
 
 

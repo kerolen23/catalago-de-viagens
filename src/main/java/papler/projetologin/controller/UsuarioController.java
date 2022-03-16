@@ -1,66 +1,47 @@
 package papler.projetologin.controller;
 
-
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import papler.projetologin.entities.UsuarioEntity;
 import papler.projetologin.repositories.UsuarioRepository;
 
+import java.util.List;
 import java.util.Optional;
 
-
 @RestController
-@RequestMapping("/api/usuario")
+@RequestMapping("/usuario")
 public class UsuarioController {
 
     private final UsuarioRepository repository;
-    private final PasswordEncoder encoder;
 
-    public UsuarioController(UsuarioRepository repository, PasswordEncoder encoder) {
+    public UsuarioController(UsuarioRepository repository) {
         this.repository = repository;
-        this.encoder = encoder;
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/salvar")
-    public ResponseEntity<UsuarioEntity> salvar(@RequestBody UsuarioEntity usuario) {
-        usuario.setPassword(encoder.encode(usuario.getPassword()));
-        return ResponseEntity.ok(repository.save(usuario));
+
+    @PostMapping("/concluirCadastro")
+    public void concluirCadastro(@RequestBody UsuarioEntity usuario) {
+        repository.save(usuario);
+
     }
 
-   @GetMapping("/validarSenha")
-    public ResponseEntity<Boolean> validarSenha(@RequestParam String login,
-                                                @RequestParam String password) {
-
-        Optional<UsuarioEntity> optUsuario = repository.findByLogin(login);
-        if (optUsuario.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
-        }
-
-       UsuarioEntity usuario = optUsuario.get();
-        boolean valid = encoder.matches(password, usuario.getPassword());
-
-        HttpStatus status = (valid) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
-        return ResponseEntity.status(status).body(valid);
-    }
-
-    @GetMapping("/usuario/{id}")
-    public Optional<UsuarioEntity> listausuario(@PathVariable(value="id") Integer id){
+    @GetMapping("/cadastro/{id}")
+    public Optional<UsuarioEntity> listaCadastro(@PathVariable(value="id") Integer id){
         return repository.findById(id);
     }
 
-    @PatchMapping ("/update")
-    public UsuarioEntity update(@RequestBody UsuarioEntity usuario){
-        usuario.setPassword(encoder.encode(usuario.getPassword()));
-        return repository.save(usuario);
+    @GetMapping("/listar/")
+    public ResponseEntity<List<UsuarioEntity>> listarTodos(){
+        return ResponseEntity.ok(repository.findAll());
+    }
 
+    @PatchMapping ("/update/cadastro")
+    public UsuarioEntity update(@RequestBody UsuarioEntity usuario){
+           return repository.save(usuario);
     }
 
     @DeleteMapping("{id}/delete")
     public void deletaProduto(@RequestBody UsuarioEntity usuario) {
         repository.delete(usuario);
     }
-
     }

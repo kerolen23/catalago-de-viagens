@@ -1,8 +1,10 @@
 package papler.projetologin.data;
 
+
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import papler.projetologin.entities.LoginEntity;
 import papler.projetologin.entities.UsuarioEntity;
 
 import java.util.ArrayList;
@@ -10,10 +12,9 @@ import java.util.Collection;
 import java.util.Optional;
 
 @AllArgsConstructor
-
 public class DetalheUsuarioData implements UserDetails {
 
-    private final Optional<UsuarioEntity> usuario;
+    private final Optional<LoginEntity> usuario;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -22,12 +23,12 @@ public class DetalheUsuarioData implements UserDetails {
 
     @Override
     public String getPassword() {
-        return usuario.orElse(new UsuarioEntity()).getPassword();
+        return usuario.orElse(new LoginEntity()).getPassword();
     }
 
     @Override
     public String getUsername() {
-        return usuario.orElse(new UsuarioEntity()).getLogin();
+        return usuario.orElse(new LoginEntity()).getLogin();
     }
 
     @Override
