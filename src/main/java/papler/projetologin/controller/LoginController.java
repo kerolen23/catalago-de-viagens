@@ -1,15 +1,14 @@
 package papler.projetologin.controller;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import papler.projetologin.dto.UsuarioDto;
 import papler.projetologin.entities.LoginEntity;
-import papler.projetologin.entities.UsuarioEntity;
 import papler.projetologin.repositories.UsuarioLoginRepository;
-import papler.projetologin.service.UsuarioService;
+import papler.projetologin.service.LoginService;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,11 +17,14 @@ import java.util.Optional;
 @RequestMapping("/login")
 public class LoginController {
 
+    @Autowired
     private final UsuarioLoginRepository loginRepository;
+    @Autowired
     private final PasswordEncoder encoder;
-    private final UsuarioService service;
+    @Autowired
+    private final LoginService service;
 
-    public LoginController(UsuarioLoginRepository loginRepository, PasswordEncoder encoder, UsuarioService service) {
+    public LoginController(UsuarioLoginRepository loginRepository, PasswordEncoder encoder, LoginService service) {
         this.loginRepository = loginRepository;
         this.encoder = encoder;
         this.service = service;
@@ -52,8 +54,9 @@ public class LoginController {
     }
 
     @GetMapping("/usuario/{id}")
-    public Optional<LoginEntity> listaUsuario(@PathVariable(value="id") Integer id){
-        return loginRepository.findById(id);
+    public ResponseEntity<Optional<LoginEntity>> listaUsuario(@PathVariable(value="id") Integer id){
+        Optional<LoginEntity> entity = service.update(id);
+        return ResponseEntity.ok().body(entity);
     }
 
     @GetMapping("/listar/")
