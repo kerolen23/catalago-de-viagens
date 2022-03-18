@@ -9,6 +9,8 @@ import papler.projetologin.entities.UsuarioEntity;
 @Repository
 public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Integer> {
 
+    public UsuarioEntity findByEmail(String email);
+
 
 
 

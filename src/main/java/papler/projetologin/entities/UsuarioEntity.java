@@ -1,12 +1,14 @@
 package papler.projetologin.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import org.springframework.lang.Nullable;
+import papler.projetologin.enums.Perfil;
 
 import javax.persistence.*;
-import java.util.List;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -15,13 +17,18 @@ import java.util.List;
 @Builder
 @Entity(name="Usuario")
 
-public class UsuarioEntity {
+public class UsuarioEntity implements Serializable {
 
+        private static final long serialVersionUID = 1L;
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name= "ID")
         private Integer id;
+        @Column(name = "password")
+        private String password;
+        @Column(name = "email", unique = true)
+        private String email;
         @Column( name = "nomeCompleto")
         private String nomeCompleto;
         @Column(name = "telefone")
@@ -44,6 +51,16 @@ public class UsuarioEntity {
         private String estado;
         @Column(name = "cep")
         private String cep;
+
+        @ElementCollection(fetch=FetchType.EAGER)
+        @CollectionTable(name="PERFIS")
+        private Set<Integer> perfis = new HashSet<>();
+
+        public void addPerfil(Perfil perfil) {
+                perfis.add(perfil.getCod());
+        }
+
+
 
 
 
