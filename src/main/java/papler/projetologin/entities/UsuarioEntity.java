@@ -35,7 +35,7 @@ public class UsuarioEntity implements Serializable {
         private String telefone;
         @Column(name = "dtNascimento")
         private String dtNascimento;
-        @Column(name = "cpf")
+        @Column(name = "cpf", unique = true)
         private String cpf;
         @Column(name = "cidade")
         private String cidade;
@@ -56,13 +56,13 @@ public class UsuarioEntity implements Serializable {
         @CollectionTable(name="PERFIS")
         private Set<Integer> perfis = new HashSet<>();
 
-        public void addPerfil(Perfil perfil) {
-                perfis.add(perfil.getCod());
+        @Override
+        public String toString() {
+                final StringBuilder sb = new StringBuilder();
+                sb.append("Seja bem vindo(a) ");
+                sb.append(getNomeCompleto());
+                sb.append("\nSeu email " + getEmail() + " foi cadastrado com sucesso!\n");
+                return sb.toString();
         }
-
-
-
-
-
 }
 
