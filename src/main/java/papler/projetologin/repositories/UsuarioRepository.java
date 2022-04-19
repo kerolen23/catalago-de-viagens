@@ -12,8 +12,16 @@ import java.util.Optional;
 @Repository
 public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Integer> {
 
-   @Transactional
+
+
+    @Transactional
     UsuarioEntity findByEmail(String email);
+
+    @Transactional
+    UsuarioEntity findUsuarioEntityById(Integer id);
+
+   @Transactional
+   Optional<UsuarioEntity> findById(Integer id);
 
 
 

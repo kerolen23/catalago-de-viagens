@@ -51,6 +51,8 @@ public class UsuarioEntity implements Serializable {
         private String estado;
         @Column(name = "cep")
         private String cep;
+        @Column(name = "imageUrl")
+        private String imageUrl;
 
         @ElementCollection(fetch=FetchType.EAGER)
         @CollectionTable(name="PERFIS")

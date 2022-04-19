@@ -1,17 +1,26 @@
 package papler.projetologin.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import papler.projetologin.dto.LoggedUserInDto;
 import papler.projetologin.dto.UsuarioDto;
 import papler.projetologin.entities.UsuarioEntity;
 import papler.projetologin.repositories.UsuarioRepository;
+import papler.projetologin.security.JWTUtil;
+import papler.projetologin.security.UserSS;
 import papler.projetologin.service.exceptions.ObjectNotFoundException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.net.URI;
+import java.net.http.HttpRequest;
 import java.text.ParseException;
 import java.util.Optional;
 
@@ -25,6 +34,14 @@ public class UsuarioService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private S3Service s3Service;
+
+    private final JWTUtil jwt;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
 
     @Transactional
@@ -107,6 +124,22 @@ public class UsuarioService {
     @Bean
     public EmailService emailService() {
         return new SmtpEmailService();
+    }
+
+
+
+    public URI uploadProfilePicture(MultipartFile multipartFile) {
+        UserSS user = UserService.authenticated();
+
+        if (user == null) {
+            throw new AuthorizationServiceException("Acesso negado");
+        }
+        URI uri =  s3Service.uploadFile(multipartFile);
+    UsuarioEntity usuario = repository.findUsuarioEntityById(user.getId());
+    usuario.setImageUrl(uri.toString());
+
+    repository.save(usuario);
+    return uri;
     }
 
 }

@@ -5,13 +5,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import papler.projetologin.dto.UsuarioDto;
 import papler.projetologin.entities.UsuarioEntity;
 import papler.projetologin.repositories.UsuarioRepository;
 import papler.projetologin.service.EmailService;
 import papler.projetologin.service.UsuarioService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.net.URI;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
@@ -37,6 +40,12 @@ public class UsuarioController {
         usuario.setPassword(encoder.encode(usuario.getPassword()));
         emailService.sendOrderConfirmationEmail(usuario);
         repository.save(usuario);
+    }
+
+    @PostMapping("/picture")
+    public ResponseEntity<Void> uploadPicture(@RequestParam(name = "file") MultipartFile file) {
+        URI uri = service.uploadProfilePicture(file);
+        return ResponseEntity.created(uri).build();
     }
 
     @PatchMapping("completar/cadastro")
@@ -66,4 +75,6 @@ public class UsuarioController {
     public void delete(UsuarioEntity usuario) {
         repository.delete(usuario);
     }
+
+
 }
