@@ -11,8 +11,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Setter
-@Entity
-public class Destinos {
+@Entity(name = "Destinos")
+public class DestinosEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
